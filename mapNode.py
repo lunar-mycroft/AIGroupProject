@@ -46,6 +46,8 @@ class MapNode:
         return res
 
     def isAdjacent(self,other,tolerance=0.001,supressDeepCheck=False):
+        if other==self:
+            return False
         if not isinstance(other,MapNode):
             return False
         if other in self.neighbors:
@@ -89,7 +91,7 @@ class MapNode:
                 self.connectTo(other)
                 return True
 
-
+        self.notNeighbors.add(other)
         return False
 
     def __str__(self): #This should return the SVG of the mape node, except not colored according to color.
@@ -102,23 +104,27 @@ class MapNode:
                     self.colors.remove(neighbor.color)
 
     def setColor(self,color):
-        if not color in self.colors:
+        if not color in self.colors: #If we _can_ avoid calling updatePossibleColors, do so.
             return False
         self.updatePossibleColors()
         if not color in self.colors:
-
             return False
 
         self.colors=set({color})
         self.color=color
         return True
 
-    def numConnections(self):
+    def numConnections(self,possibleNeighbors=None):
+        if possibleNeighbors==None:
+            for node in possibleNeighbors:
+                self.isAdjacent(node)
+
         return len(self.neighbors)
+
 
     def numValues(self):
         if self.color!=None:
-            if len(self.colors)>1
+            if len(self.colors)>1:
                 self.colors=set({self.color})
             return 1
         if len(self.colors)==1 and self.color==None:
