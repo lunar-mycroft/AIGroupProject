@@ -1,7 +1,7 @@
-import GeneratePoints
+import PointsFromCSV
 
 def main():
-    points = GeneratePoints.GetPointsFromCSV('OhioCounties.csv')
+    points = PointsFromCSV.GetPointsFromCSV('OhioCounties.csv')
     
 
 

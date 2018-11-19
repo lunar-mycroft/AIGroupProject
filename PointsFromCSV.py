@@ -22,11 +22,11 @@ def GetPointsFromCSV(CSVNAME):
         xyTupleList = list()
         for coordinate in xyList:
             split = coordinate.split(',')
-            xyTupleList.append((split[0],split[1]))
+            xyTupleList.append((float(split[0]),float(split[1])))
         points.append((county[0],xyTupleList))
     
     print(len(points))
-    #print(points[0])
+    print(points[0])
     #print(points[1])
 
     return points
