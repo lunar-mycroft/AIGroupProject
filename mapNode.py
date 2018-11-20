@@ -63,13 +63,13 @@ class MapNode:
         otherLines=other.getLines()
 
         for line in lines:
-            steepSlope=abs(line[0][0]-line[1][0])>abs(line[0][1]-line[1][1])
+            steepSlope=abs(line[0][0]-line[1][0])<abs(line[0][1]-line[1][1])
             deltaX=line[0][0]-line[1][0]
             deltaY=line[0][1]-line[1][1]
             m1 = deltaX/deltaY if steepSlope else deltaY/deltaX
             b1 = line[0][0]-m1*line[0][1] if steepSlope else line[0][1]-m1*line[0][0]
             for otherLine in otherLines():
-                if abs(otherLine[0][0]-otherLine[1][0])>abs(otherLine[0][1]-otherLine[1][1])!=steepSlope:
+                if abs(otherLine[0][0]-otherLine[1][0])<abs(otherLine[0][1]-otherLine[1][1])!=steepSlope:
                     continue
                 deltaX=otherLine[0][0]-otherLine[1][0]
                 deltaY=otherLine[0][1]-otherLine[1][1]
