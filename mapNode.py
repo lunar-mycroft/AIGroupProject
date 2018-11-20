@@ -1,3 +1,5 @@
+from pointUtils import boundingCircle, pointDistance, normalizePoint
+
 class MapNode:
     def __init__(self,inName,inID,polygons,colors): #Constructor.
         self.name = inName
@@ -61,6 +63,13 @@ class MapNode:
         if supressDeepCheck:
             return False
 
+        circle=boundingCircle(self.poly)
+        otherCircle=boundingCircle(other.poly)
+        maxDistance=(circle[1]+otherCircle[1])+2*tolerance
+
+        if pointDistance(circle[0],otherCircle[0])>maxDistance:
+            return False
+
         lines=self.getLines()
         otherLines=other.getLines()
 
@@ -81,12 +90,12 @@ class MapNode:
                 if abs(m1-m2)>tolerance or abs(b1-b2)>tolerance:
                     continue
                 if steepSlope:
-                    if line[0][1]>otherLine[0][1] and line[1][1]>otherLine[0][1] and line[1][1]>otherLine[1][1]:
+                    if line[0][1] > otherLine[0][1] and line[1][1] > otherLine[0][1] and line[1][1] > otherLine[1][1]:
                         continue
                     if line[0][1] < otherLine[0][1] and line[1][1] < otherLine[0][1] and line[1][1] < otherLine[1][1]:
                         continue
                 else:
-                    if line[0][0]>otherLine[0][0] and line[1][0]>otherLine[0][0] and line[1][0]>otherLine[1][0]:
+                    if line[0][0] > otherLine[0][0] and line[1][0] > otherLine[0][0] and line[1][0] > otherLine[1][0]:
                         continue
                     if line[0][0] < otherLine[0][0] and line[1][0] < otherLine[0][0] and line[1][0] < otherLine[1][0]:
                         continue
@@ -95,9 +104,6 @@ class MapNode:
 
         self.notNeighbors.add(other)
         return False
-
-    def __str__(self): #This should return the SVG of the mape node, except not colored according to color.
-        return "placeholder"
 
     def updatePossibleColors(self):
         for neighbor in self.neighbors:
@@ -123,10 +129,18 @@ class MapNode:
 
         return len(self.neighbors)
 
-
     def numValues(self):
         if self.color is not None:
             if len(self.colors)>1:
                 self.colors=set({self.color})
             return 1
         return len(self.colors)
+
+    def normalizePoly(self,oldBox,newSize):
+        self.poly=list(map(lambda p:normalizePoint(p,oldBox,newSize),self.poly))
+
+    def __str__(self): #This should return the SVG of the mape node, except not colored according to color.
+        res="<polygon id=\"" + str(self.id) + "\" " + "points=\""
+        for point in self.poly:
+            res+=str(point[0])+','+str(point[1])+' '
+        return res+"\" style=\"fill:#"+(str(self.color) if self.color is not None else "aaaaaa")+";stroke:#ffffff;stroke-width:1\"/>"
