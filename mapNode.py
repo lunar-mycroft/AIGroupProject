@@ -1,6 +1,7 @@
 class MapNode:
-    def __init__(self,inName,polygons,colors): #Constructor.
+    def __init__(self,inName,inID,polygons,colors): #Constructor.
         self.name = inName
+        self.id = inID
         self.neighbors=set({})
         self.notNeighbors=set({})
         self.color=None

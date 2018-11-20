@@ -9,7 +9,7 @@ def DrawPoints(counties,htmlPath):
     htmlPath.write("<svg height = \""+ str(WidthHeightTuple[1]) +"\" width = \"" + str(WidthHeightTuple[0]) + "\">\n")
 
     for county in counties:
-        htmlPath.write("<polygon points=\"")
+        htmlPath.write("<polygon id=\"" + str(county.id) + "\" " + "points=\"")
         for point in county.poly:
             htmlPath.write(str(point[0]) + ',' + str(point[1]) + ' ')
         htmlPath.write("\" style=\"stroke:purple;stroke-width:1\" />\n")
