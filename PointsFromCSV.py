@@ -1,7 +1,7 @@
 import csv
 
 
-# list (string county name , list( (x,y) ) )
+# list (string countyname , list( (x,y) ) )
 def GetPointsFromCSV(CSVNAME):
     points = list()
     #'GroupMapColoring/OhioCounties.csv'
@@ -25,8 +25,8 @@ def GetPointsFromCSV(CSVNAME):
             xyTupleList.append((float(split[0]),float(split[1])))
         points.append((county[0],xyTupleList))
     
-    print(len(points))
-    print(points[0])
+    #print(len(points))
+    #print(points[0])
     #print(points[1])
 
     return points
