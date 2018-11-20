@@ -11,21 +11,20 @@ def GetPointsFromCSV(CSVNAME):
         for row in reader:
             countiesCSV.append((row['County Name'],row["geometry"]))
     
-    
-    for index in range(0,len(countiesCSV)):
-        newGeometry = countiesCSV[index][1].replace("<Polygon><outerBoundaryIs><LinearRing><coordinates>",'')
-        newGeometry = newGeometry.replace("</coordinates></LinearRing></outerBoundaryIs></Polygon>",'')
-        countiesCSV[index] = (countiesCSV[index][0],newGeometry)
-
     counties = list() 
     for countyCSV in countiesCSV:
+        newGeometry = countyCSV[1].replace("<Polygon><outerBoundaryIs><LinearRing><coordinates>",'')
+        newGeometry = newGeometry.replace("</coordinates></LinearRing></outerBoundaryIs></Polygon>",'')
+        countyCSV = (countyCSV[0],newGeometry)
+
         xyList = countyCSV[1].split(' ')
         xyTupleList = list()
         for coordinate in xyList:
             split = coordinate.split(',')
-            xyTupleList.append((float(split[0]),float(split[1])))
-        newCounty = MapNode(xyTupleList,['empty','empty'])
+            xyTupleList.append((float(split[0]),-float(split[1])))
+        newCounty = MapNode(countyCSV[0],xyTupleList,['empty','empty'])
         counties.append(newCounty)
+        
     
     #print(len(points))
     #print(points[0])

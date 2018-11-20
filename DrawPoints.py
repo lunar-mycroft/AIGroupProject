@@ -1,16 +1,28 @@
-svgWidth = 200
+svgWidth = 1000
+
 # list (string countyname , list( (x,y) ) )
 
-def DrawPoints(counties):
-    print()
+def DrawPoints(counties,htmlPath):
+    htmlPath = open(htmlPath,'w')
+    WidthHeightTuple = __PointsIntoRange__(counties)
+    
+    htmlPath.write("<svg height = \""+ str(WidthHeightTuple[1]) +"\" width = \"" + str(WidthHeightTuple[0]) + "\">\n")
+
+    for county in counties:
+        htmlPath.write("<polygon points=\"")
+        for point in county.poly:
+            htmlPath.write(str(point[0]) + ',' + str(point[1]) + ' ')
+        htmlPath.write("\" style=\"stroke:purple;stroke-width:1\" />\n")
+
+    htmlPath.write("</svg>")
+    htmlPath.close()
 
 
 
 
 
 
-
-def PointsIntoRange(counties):
+def __PointsIntoRange__(counties):
     
     #[xmin,ymin,xmax,ymax]
     minMaxXY = MinMaxXY(counties)
@@ -27,7 +39,7 @@ def PointsIntoRange(counties):
             pointY = counties[countyIndex].poly[tupleXYIndex][1]
             counties[countyIndex].poly[tupleXYIndex] = (NormalizeRangeX(pointX,minX,maxX,svgWidth), NormalizeRangeY(pointY,minY,maxY,svgHeight))
 
-    return counties
+    return (svgWidth,svgHeight)
 
 def NormalizeRangeX(input, inputMin, inputMax,svgWidth):
     return ((svgWidth)*(input - inputMin))/(inputMax - inputMin)
