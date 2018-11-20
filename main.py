@@ -2,8 +2,8 @@ import PointsFromCSV
 import DrawPoints
 
 def main():
-    points = PointsFromCSV.GetPointsFromCSV('OhioCounties.csv')
-    DrawPoints.DrawPoints(points)
+    counties = PointsFromCSV.GetPointsFromCSV('OhioCounties.csv')
+    DrawPoints.DrawPoints(counties)
 
 
 

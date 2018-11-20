@@ -2,16 +2,18 @@ svgWidth = 200
 svgHeight = 200
 # list (string countyname , list( (x,y) ) )
 
-def DrawPoints(points):
-    points = PointsIntoRange(points)
+def DrawPoints(counties):
+    counties = PointsIntoRange(counties)
 
     
 
 
-def PointsIntoRange(points):
+
+
+def PointsIntoRange(counties):
     
     #[xmin,ymin,xmax,ymax]
-    minMaxXY = MinMaxXY(points)
+    minMaxXY = MinMaxXY(counties)
     minX = minMaxXY[0]
     minY = minMaxXY[1]
     maxX = minMaxXY[2]
@@ -19,27 +21,27 @@ def PointsIntoRange(points):
     mapRatio = (maxY - minY)/(maxX - minX)
     svgHeight = svgWidth * mapRatio
 
-    for tupleNamePointsIndex in range(0, len(points)): #tupleNamePoints = tuple of name and list of points
-        for tupleXYIndex in range(0,len(points[tupleNamePointsIndex][1])) : # tupleXYIndex = list of tuples of x and y
-            pointX = points[tupleNamePointsIndex][1][tupleXYIndex][0]
-            pointY = points[tupleNamePointsIndex][1][tupleXYIndex][1]
-            points[tupleNamePointsIndex][1][tupleXYIndex] = (NormalizeRangeX(pointX,minX,maxX,svgWidth), NormalizeRangeY(pointY,minY,maxY,svgHeight))
+    for countyIndex in range(0, len(counties)): #tupleNamePoints = tuple of name and list of points
+        for tupleXYIndex in range(0,len(counties[countyIndex].points)) : # tupleXYIndex = list of tuples of x and y
+            pointX = counties[countyIndex].points[tupleXYIndex][0]
+            pointY = counties[countyIndex].points[tupleXYIndex][1]
+            counties[countyIndex].points[tupleXYIndex] = (NormalizeRangeX(pointX,minX,maxX,svgWidth), NormalizeRangeY(pointY,minY,maxY,svgHeight))
 
-    return points
+    return counties
 
 def NormalizeRangeX(input, inputMin, inputMax,svgWidth):
     return ((svgWidth)*(input - inputMin))/(inputMax - inputMin)
 def NormalizeRangeY(input, inputMin, inputMax,svgHeight):
     return ((svgHeight)*(input - inputMin))/(inputMax - inputMin)
 
-def MinMaxXY(points):
-    maxX = points[0][1][0][0]
-    maxY = points[0][1][0][1]
-    minX = points[0][1][0][0]
-    minY = points[0][1][0][1]
+def MinMaxXY(counties):
+    maxX = counties[0].points[0][0]
+    maxY = counties[0].points[0][1]
+    minX = counties[0].points[0][0]
+    minY = counties[0].points[0][1]
 
-    for tupleNamePoints in points: #tupleNamePoints = tuple of name and list of points
-        for tupleXY in tupleNamePoints[1]: # tupleXYIndex = list of tuples of x and y
+    for county in counties: #tupleNamePoints = tuple of name and list of points
+        for tupleXY in county.points: # tupleXYIndex = list of tuples of x and y
             if tupleXY[0] > maxX:
                 maxX = tupleXY[0]
             if tupleXY[1] > maxY:
