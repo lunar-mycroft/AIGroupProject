@@ -1,11 +1,10 @@
 svgWidth = 200
-svgHeight = 200
 # list (string countyname , list( (x,y) ) )
 
 def DrawPoints(counties):
     counties = PointsIntoRange(counties)
 
-    
+
 
 
 
