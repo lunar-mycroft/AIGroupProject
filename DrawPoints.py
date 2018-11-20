@@ -1,7 +1,5 @@
 from pointUtils import superBoundingBox, boundingBox, boundingBoxSize, boxCenter
-
-
-# list (string countyname , list( (x,y) ) )
+from svgStrings import line
 
 def DrawPoints(counties, path):
     box = superBoundingBox(map(lambda c: boundingBox(c.poly), counties))
@@ -14,6 +12,12 @@ def DrawPoints(counties, path):
         for county in counties:
             file.write(str(county))
 
+        for county in counties:
+            c1=county.center()
+            for neighbor in county.neighbors:
+                c2=neighbor.center()
+                file.write(line((c1[0],c1[1],c2[0],c2[1]),"stroke:rgb(255,0,0);stroke-width:2"))
+
         file.write("</svg>")
 
 def drawingSize(box, width):
@@ -21,7 +25,6 @@ def drawingSize(box, width):
     mapRatio = size[1] / size[0]
     height = width * mapRatio
     return (width, height)
-
 
 def normalize(counties, box, size):
     for county in counties:

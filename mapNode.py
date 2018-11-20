@@ -1,4 +1,5 @@
 from pointUtils import boundingCircle, pointDistance, normalizePoint
+from svgStrings import dot as svgDot, polygon as svgPolygon, line as svgLine
 
 class MapNode:
     def __init__(self,inName,inID,polygons,colors): #Constructor.
@@ -74,17 +75,22 @@ class MapNode:
         otherLines=other.getLines()
 
         for line in lines:
-            steepSlope=abs(line[0][0]-line[1][0])<abs(line[0][1]-line[1][1])
             deltaX=line[0][0]-line[1][0]
             deltaY=line[0][1]-line[1][1]
+
+            steepSlope=abs(deltaY)>abs(deltaX)
+
             m1 = deltaX/deltaY if steepSlope else deltaY/deltaX
             b1 = line[0][0]-m1*line[0][1] if steepSlope else line[0][1]-m1*line[0][0]
-            for otherLine in otherLines():
-                if abs(otherLine[0][0]-otherLine[1][0])<abs(otherLine[0][1]-otherLine[1][1])!=steepSlope:
+
+            for otherLine in otherLines:
+                deltaX1=otherLine[0][0]-otherLine[1][0]
+                deltaY1=otherLine[0][1]-otherLine[1][1]
+                steepSlope1=abs(deltaY1) > abs(deltaX1)
+                if steepSlope1!=steepSlope:
                     continue
-                deltaX=otherLine[0][0]-otherLine[1][0]
-                deltaY=otherLine[0][1]-otherLine[1][1]
-                m2 = deltaX/deltaY if steepSlope else deltaY/deltaX
+
+                m2 = deltaX1/deltaY1 if steepSlope else deltaY1/deltaX1
                 b2 = otherLine[0][1]-m2*otherLine[0][1]
 
                 if abs(m1-m2)>tolerance or abs(b1-b2)>tolerance:
@@ -139,11 +145,19 @@ class MapNode:
     def normalizePoly(self,oldBox,newSize):
         self.poly=list(map(lambda p:normalizePoint(p,oldBox,newSize),self.poly))
 
+    def boundingCircle(self):
+        try:
+            return self._boundingCircle_
+        except:
+            self._boundingCircle_=boundingCircle(self.poly)
+            return self._boundingCircle_
+
+    def center(self):
+        return self.boundingCircle()[0]
+
     def __str__(self): #This should return the SVG of the mape node, except not colored according to color.
-        res="<polygon id=\"" + str(self.id) + "\" " + "points=\""
-        for point in self.poly:
-            res+=str(point[0])+','+str(point[1])+' '
-        return res+"\" style=\"fill:#"+(str(self.color) if self.color is not None else "aaaaaa")+";stroke:#ffffff;stroke-width:1\"/>"
+        res= svgPolygon(id,self.poly,"fill:#"+("aaaaaa" if self.color is None else self.color)+";stroke:#ffffff;stroke-width:1")+"\n"#+svgDot(self.boundingCircle()[0],"ff0000")+"\n"
+        return res
 
     def __gt__(self, other):
         return self.id>other.id #Placeholder
