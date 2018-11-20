@@ -16,8 +16,6 @@ def DrawPoints(counties, path):
 
         file.write("</svg>")
 
-
-
 def drawingSize(box, width):
     size = boundingBoxSize(box)
     mapRatio = size[1] / size[0]

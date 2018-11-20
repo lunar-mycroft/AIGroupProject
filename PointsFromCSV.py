@@ -13,7 +13,7 @@ def GetPointsFromCSV(CSVNAME):
     
     nodes = list() 
     id = 0
-    for nodeCSV in nodesCSV:
+    for id,nodeCSV in enumerate(nodesCSV):
         newGeometry = nodeCSV[1].replace("<Polygon><outerBoundaryIs><LinearRing><coordinates>",'')
         newGeometry = newGeometry.replace("</coordinates></LinearRing></outerBoundaryIs></Polygon>",'')
         nodeCSV = (nodeCSV[0],newGeometry)
@@ -23,8 +23,7 @@ def GetPointsFromCSV(CSVNAME):
         for coordinate in xyList:
             split = coordinate.split(',')
             xyTupleList.append((float(split[0]),-float(split[1])))
-        newCounty = MapNode(nodeCSV[0],id,xyTupleList,['empty','empty'])
-        id = id+1
+        newCounty = MapNode(nodeCSV[0],id,xyTupleList,["ff0000","00ff00","0000ff","ff00ff"])
         nodes.append(newCounty)
 
         

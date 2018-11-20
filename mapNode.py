@@ -144,3 +144,6 @@ class MapNode:
         for point in self.poly:
             res+=str(point[0])+','+str(point[1])+' '
         return res+"\" style=\"fill:#"+(str(self.color) if self.color is not None else "aaaaaa")+";stroke:#ffffff;stroke-width:1\"/>"
+
+    def __gt__(self, other):
+        return self.id>other.id #Placeholder
