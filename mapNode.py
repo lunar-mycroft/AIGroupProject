@@ -6,7 +6,7 @@ class MapNode:
         self.poly=polygons
         self.colors=set(colors)
 
-    def connectTo(self, other):
+    def connectTo(self, other): #Forces a connection.  Don't use if you don't have to.
         if not isinstance(other, MapNode):
             return False
 
@@ -115,7 +115,7 @@ class MapNode:
         return True
 
     def numConnections(self,possibleNeighbors=None):
-        if possibleNeighbors==None:
+        if possibleNeighbors is not None:
             for node in possibleNeighbors:
                 self.isAdjacent(node)
 
@@ -123,11 +123,8 @@ class MapNode:
 
 
     def numValues(self):
-        if self.color!=None:
+        if self.color is not None:
             if len(self.colors)>1:
                 self.colors=set({self.color})
             return 1
-        if len(self.colors)==1 and self.color==None:
-            for color in self.colors:
-                self.color=color
         return len(self.colors)
