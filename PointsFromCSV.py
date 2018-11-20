@@ -1,5 +1,5 @@
 import csv
-from County import County
+from mapNode import MapNode
 
 # list (string countyname , list( (x,y) ) )
 def GetPointsFromCSV(CSVNAME):
@@ -24,7 +24,7 @@ def GetPointsFromCSV(CSVNAME):
         for coordinate in xyList:
             split = coordinate.split(',')
             xyTupleList.append((float(split[0]),float(split[1])))
-        newCounty = County(countyCSV[0],xyTupleList)
+        newCounty = MapNode(xyTupleList,['empty','empty'])
         counties.append(newCounty)
     
     #print(len(points))

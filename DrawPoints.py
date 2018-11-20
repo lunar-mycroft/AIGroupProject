@@ -2,7 +2,8 @@ svgWidth = 200
 # list (string countyname , list( (x,y) ) )
 
 def DrawPoints(counties):
-    counties = PointsIntoRange(counties)
+    print()
+
 
 
 
@@ -21,10 +22,10 @@ def PointsIntoRange(counties):
     svgHeight = svgWidth * mapRatio
 
     for countyIndex in range(0, len(counties)): #tupleNamePoints = tuple of name and list of points
-        for tupleXYIndex in range(0,len(counties[countyIndex].points)) : # tupleXYIndex = list of tuples of x and y
-            pointX = counties[countyIndex].points[tupleXYIndex][0]
-            pointY = counties[countyIndex].points[tupleXYIndex][1]
-            counties[countyIndex].points[tupleXYIndex] = (NormalizeRangeX(pointX,minX,maxX,svgWidth), NormalizeRangeY(pointY,minY,maxY,svgHeight))
+        for tupleXYIndex in range(0,len(counties[countyIndex].poly)) : # tupleXYIndex = list of tuples of x and y
+            pointX = counties[countyIndex].poly[tupleXYIndex][0]
+            pointY = counties[countyIndex].poly[tupleXYIndex][1]
+            counties[countyIndex].poly[tupleXYIndex] = (NormalizeRangeX(pointX,minX,maxX,svgWidth), NormalizeRangeY(pointY,minY,maxY,svgHeight))
 
     return counties
 
@@ -34,13 +35,13 @@ def NormalizeRangeY(input, inputMin, inputMax,svgHeight):
     return ((svgHeight)*(input - inputMin))/(inputMax - inputMin)
 
 def MinMaxXY(counties):
-    maxX = counties[0].points[0][0]
-    maxY = counties[0].points[0][1]
-    minX = counties[0].points[0][0]
-    minY = counties[0].points[0][1]
+    maxX = counties[0].poly[0][0]
+    maxY = counties[0].poly[0][1]
+    minX = counties[0].poly[0][0]
+    minY = counties[0].poly[0][1]
 
-    for county in counties: #tupleNamePoints = tuple of name and list of points
-        for tupleXY in county.points: # tupleXYIndex = list of tuples of x and y
+    for county in counties: #tupleNamePoints = tuple of name and list of poly
+        for tupleXY in county.poly: # tupleXYIndex = list of tuples of x and y
             if tupleXY[0] > maxX:
                 maxX = tupleXY[0]
             if tupleXY[1] > maxY:

@@ -35,7 +35,7 @@ class MapNode:
 
         if not self in other.notNeighbors:
             other.notNeighbors.add(self)
-        if not other in self.notNeighbors():
+        if not other in self.notNeighbors:
             self.notNeighbors.remove(other)
         return True
 
