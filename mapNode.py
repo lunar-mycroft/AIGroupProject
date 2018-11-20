@@ -1,5 +1,7 @@
 class MapNode:
-    def __init__(self,polygons,colors): #Constructor.
+    def __init__(self,inName,inID,polygons,colors): #Constructor.
+        self.name = inName
+        self.id = inID
         self.neighbors=set({})
         self.notNeighbors=set({})
         self.color=None
@@ -35,7 +37,7 @@ class MapNode:
 
         if not self in other.notNeighbors:
             other.notNeighbors.add(self)
-        if not other in self.notNeighbors():
+        if not other in self.notNeighbors:
             self.notNeighbors.remove(other)
         return True
 
