@@ -11,6 +11,7 @@ def DrawPoints(counties, path,debugLines=False):
         file.write("<svg height = \"" + str(height) + "\" width = \"" + str(width) + "\">\n")
         for county in counties:
             file.write(str(county))
+
         if debugLines:
             for county in counties:
                 c1=county.center()

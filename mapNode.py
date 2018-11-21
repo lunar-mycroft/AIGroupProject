@@ -1,5 +1,5 @@
-from pointUtils import boundingCircle, pointDistance, normalizePoint, linesAdjacent, lines, perpLine,linesCross
-from svgStrings import dot as svgDot, polygon as svgPolygon, line as svgLine
+from pointUtils import boundingCircle, pointDistance, normalizePoint, lines, perpLine,linesCross,angleBetween
+from svgStrings import dot as svgDot, polygon as svgPolygon
 from itertools import product as cartProd
 
 class MapNode:
@@ -70,18 +70,12 @@ class MapNode:
                 if linesCross(norm,otherLine):
                     self.connectTo(other)
                     return True
-
-        #for line,otherLine in cartProd(lines(self.poly),lines(other.poly)):
-        #    if linesAdjacent(line,otherLine,tolerance,tolerance*(circle[1]+otherCircle[1])):
-        #        self.connectTo(other)
-        #        return True
-
         self.notNeighbors.add(other)
         return False
 
     def updatePossibleColors(self):
         for neighbor in self.neighbors:
-            if neighbor.color!=None:
+            if neighbor.color is not None:
                 if neighbor.color in self.colors:
                     self.colors.remove(neighbor.color)
 
@@ -91,8 +85,6 @@ class MapNode:
         self.updatePossibleColors()
         if not color in self.colors:
             return False
-
-        self.colors=set({color})
         self.color=color
         return True
 

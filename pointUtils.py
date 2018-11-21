@@ -1,5 +1,4 @@
-from math import sqrt
-from pyclipper import PyclipperOffset, JT_ROUND, ET_CLOSEDPOLYGON
+from math import sqrt,acos,pi
 
 def pointDistance(point1,point2):
     return sqrt((point1[0]-point2[0])**2+(point1[1]-point2[1])**2)
@@ -69,6 +68,16 @@ def colinear(line1, line2, slopeTolerance, distTolerance):
     DeltaB = abs(b1 - b2)
     return DeltaB / sqrt(DeltaB ** 2 + 1) <= distTolerance
 
+def angleBetween(line1,line2):
+    vec1=line1[1][0]-line1[0][0],line1[1][1]-line1[0][1]
+    vec2=line2[1][0]-line2[0][0],line2[1][1]-line2[0][1]
+    len1=pointDistance(line1[0],line1[1])
+    len2=pointDistance(line2[0],line2[1])
+    normalizedDotProd=abs(vec1[0]*vec2[1]+vec1[1]*vec2[1])/(len1*len2)
+    if normalizedDotProd>1:
+        return pi/2
+    return acos(normalizedDotProd)
+
 def linesOverlap(line1, line2):
     i = 1 if slopeIntercept(line1)[0] else 0
     min1 = min(line1, key=lambda p: p[i])[i]
@@ -101,10 +110,3 @@ def perpLine(line,length=1,place=0):
     DeltaX=(line[1][0]-line[0][0])*length
     DeltaY=(line[1][1]-line[0][1])*length
     return (X_0,Y_0),(X_0+DeltaX,Y_0+DeltaY)
-
-
-def offset(points,amount):
-    pco = PyclipperOffset()
-    pco.AddPath(tuple(points), JT_ROUND, ET_CLOSEDPOLYGON)
-    solution = pco.Execute(amount)
-    return list(map(lambda l:tuple(l),solution[0]))
