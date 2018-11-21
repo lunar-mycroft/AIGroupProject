@@ -1,4 +1,4 @@
-from pointUtils import boundingCircle, pointDistance, normalizePoint, linesAdjacent, lines
+from pointUtils import boundingCircle, pointDistance, normalizePoint, linesAdjacent, lines, perpLine,linesCross
 from svgStrings import dot as svgDot, polygon as svgPolygon, line as svgLine
 from itertools import product as cartProd
 
@@ -45,7 +45,7 @@ class MapNode:
             self.notNeighbors.remove(other)
         return True
 
-    def isAdjacent(self,other,tolerance=0.001,supressDeepCheck=False):
+    def isAdjacent(self,other,tolerance=0.01,supressDeepCheck=False):
         if other is self or not isinstance(other,MapNode):
             return False
         if other in self.neighbors:
@@ -58,14 +58,23 @@ class MapNode:
         otherCircle=boundingCircle(other.poly)
         maxDistance=(circle[1]+otherCircle[1])*(1+2*tolerance)
 
+        normLen=circle[1]*tolerance
+
         if pointDistance(circle[0],otherCircle[0])>maxDistance:
             return False
 
+        for line in lines(self.poly):
+            normals=[perpLine(line,normLen,0),perpLine(line,-normLen,0),
+                     perpLine(line, normLen, 1), perpLine(line, -normLen, 1)]
+            for norm,otherLine in cartProd(normals,lines(other.poly)):
+                if linesCross(norm,otherLine):
+                    self.connectTo(other)
+                    return True
 
-        for line,otherLine in cartProd(lines(self.poly),lines(other.poly)):
-            if linesAdjacent(line,otherLine,tolerance,tolerance*(circle[1]+otherCircle[1])):
-                self.connectTo(other)
-                return True
+        #for line,otherLine in cartProd(lines(self.poly),lines(other.poly)):
+        #    if linesAdjacent(line,otherLine,tolerance,tolerance*(circle[1]+otherCircle[1])):
+        #        self.connectTo(other)
+        #        return True
 
         self.notNeighbors.add(other)
         return False
@@ -115,7 +124,7 @@ class MapNode:
         return self.boundingCircle()[0]
 
     def __str__(self): #This should return the SVG of the mape node, except not colored according to color.
-        res= svgPolygon(id,self.poly,"fill:#"+("aaaaaa" if self.color is None else self.color)+";stroke:#ffffff;stroke-width:1")+"\n"+svgDot(self.boundingCircle()[0],"ff0000")+"\n"
+        res= svgPolygon(self.id,self.poly,"fill:#"+("aaaaaa" if self.color is None else self.color)+";stroke:#ffffff;stroke-width:1")+"\n"#+svgDot(self.boundingCircle()[0],"ff0000")+"\n"
         return res
 
     def __gt__(self, other):

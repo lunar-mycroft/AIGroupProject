@@ -2,22 +2,21 @@ from pointUtils import superBoundingBox, boundingBox, boundingBoxSize, boxCenter
 from svgStrings import line
 
 
-def DrawPoints(counties, path):
+def DrawPoints(counties, path,debugLines=False):
     box = superBoundingBox(map(lambda c: boundingBox(c.poly), counties))
     width, height = drawingSize(box,width=1000)
     normalize(counties,box,(width,height))
 
     with open(path,'w') as file:
         file.write("<svg height = \"" + str(height) + "\" width = \"" + str(width) + "\">\n")
-
         for county in counties:
             file.write(str(county))
-
-        for county in counties:
-            c1=county.center()
-            for neighbor in county.neighbors:
-                c2=neighbor.center()
-                file.write(line((c1[0],c1[1],c2[0],c2[1]),"stroke:rgb(255,0,0);stroke-width:2"))
+        if debugLines:
+            for county in counties:
+                c1=county.center()
+                for neighbor in county.neighbors:
+                    c2=neighbor.center()
+                    file.write(line((c1[0],c1[1],c2[0],c2[1]),"stroke:rgb(255,0,0);stroke-width:2"))
 
         file.write("</svg>")
 

@@ -7,7 +7,7 @@ def main():
     nodes = PointsFromCSV.GetPointsFromCSV('OhioCounties.csv')
     startTime=time()
     for node,otherNode in cartProd(nodes,repeat=2):
-        node.isAdjacent(otherNode,tolerance=0.0001)
+        node.isAdjacent(otherNode,tolerance=0.001)
 
     print(time()-startTime)
 
