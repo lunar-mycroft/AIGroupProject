@@ -1,18 +1,14 @@
 import PointsFromCSV
 import DrawPoints
 from time import time
+from itertools import product as cartProd
 
 def main():
     nodes = PointsFromCSV.GetPointsFromCSV('OhioCounties.csv')
     startTime=time()
-    oldTime=time()
-    for node in nodes:
-        for otherNode in nodes:
-            if node.isAdjacent(otherNode,tolerance=0.0001):
-                anyTrue=True
-        t=time()
-        print(t-oldTime)
-        oldTime=t
+    for node,otherNode in cartProd(nodes,repeat=2):
+        node.isAdjacent(otherNode,tolerance=0.0001)
+
     print(time()-startTime)
 
     DrawPoints.DrawPoints(nodes, "home.html")

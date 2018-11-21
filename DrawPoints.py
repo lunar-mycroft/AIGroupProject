@@ -1,6 +1,7 @@
 from pointUtils import superBoundingBox, boundingBox, boundingBoxSize, boxCenter
 from svgStrings import line
 
+
 def DrawPoints(counties, path):
     box = superBoundingBox(map(lambda c: boundingBox(c.poly), counties))
     width, height = drawingSize(box,width=1000)

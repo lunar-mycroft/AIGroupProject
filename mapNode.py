@@ -1,5 +1,6 @@
-from pointUtils import boundingCircle, pointDistance, normalizePoint
+from pointUtils import boundingCircle, pointDistance, normalizePoint, linesAdjacent, lines
 from svgStrings import dot as svgDot, polygon as svgPolygon, line as svgLine
+from itertools import product as cartProd
 
 class MapNode:
     def __init__(self,inName,inID,polygons,colors): #Constructor.
@@ -44,67 +45,25 @@ class MapNode:
             self.notNeighbors.remove(other)
         return True
 
-    def getLines(self):
-        res=[]
-        for i, vert in enumerate(self.poly):
-            res.append((self.poly[i-1],vert))
-        return res
-
     def isAdjacent(self,other,tolerance=0.001,supressDeepCheck=False):
-        if other==self:
-            return False
-        if not isinstance(other,MapNode):
+        if other is self or not isinstance(other,MapNode):
             return False
         if other in self.neighbors:
             return True
 
-        if other in self.notNeighbors:
-            return False
-
-        if supressDeepCheck:
+        if other in self.notNeighbors or (self in other.notNeighbors) or supressDeepCheck:
             return False
 
         circle=boundingCircle(self.poly)
         otherCircle=boundingCircle(other.poly)
-        maxDistance=(circle[1]+otherCircle[1])+2*tolerance
+        maxDistance=(circle[1]+otherCircle[1])*(1+2*tolerance)
 
         if pointDistance(circle[0],otherCircle[0])>maxDistance:
             return False
 
-        lines=self.getLines()
-        otherLines=other.getLines()
 
-        for line in lines:
-            deltaX=line[0][0]-line[1][0]
-            deltaY=line[0][1]-line[1][1]
-
-            steepSlope=abs(deltaY)>abs(deltaX)
-
-            m1 = deltaX/deltaY if steepSlope else deltaY/deltaX
-            b1 = line[0][0]-m1*line[0][1] if steepSlope else line[0][1]-m1*line[0][0]
-
-            for otherLine in otherLines:
-                deltaX1=otherLine[0][0]-otherLine[1][0]
-                deltaY1=otherLine[0][1]-otherLine[1][1]
-                steepSlope1=abs(deltaY1) > abs(deltaX1)
-                if steepSlope1!=steepSlope:
-                    continue
-
-                m2 = deltaX1/deltaY1 if steepSlope else deltaY1/deltaX1
-                b2 = otherLine[0][1]-m2*otherLine[0][1]
-
-                if abs(m1-m2)>tolerance or abs(b1-b2)>tolerance:
-                    continue
-                if steepSlope:
-                    if line[0][1] > otherLine[0][1] and line[1][1] > otherLine[0][1] and line[1][1] > otherLine[1][1]:
-                        continue
-                    if line[0][1] < otherLine[0][1] and line[1][1] < otherLine[0][1] and line[1][1] < otherLine[1][1]:
-                        continue
-                else:
-                    if line[0][0] > otherLine[0][0] and line[1][0] > otherLine[0][0] and line[1][0] > otherLine[1][0]:
-                        continue
-                    if line[0][0] < otherLine[0][0] and line[1][0] < otherLine[0][0] and line[1][0] < otherLine[1][0]:
-                        continue
+        for line,otherLine in cartProd(lines(self.poly),lines(other.poly)):
+            if linesAdjacent(line,otherLine,tolerance,tolerance*(circle[1]+otherCircle[1])):
                 self.connectTo(other)
                 return True
 
@@ -156,7 +115,7 @@ class MapNode:
         return self.boundingCircle()[0]
 
     def __str__(self): #This should return the SVG of the mape node, except not colored according to color.
-        res= svgPolygon(id,self.poly,"fill:#"+("aaaaaa" if self.color is None else self.color)+";stroke:#ffffff;stroke-width:1")+"\n"#+svgDot(self.boundingCircle()[0],"ff0000")+"\n"
+        res= svgPolygon(id,self.poly,"fill:#"+("aaaaaa" if self.color is None else self.color)+";stroke:#ffffff;stroke-width:1")+"\n"+svgDot(self.boundingCircle()[0],"ff0000")+"\n"
         return res
 
     def __gt__(self, other):

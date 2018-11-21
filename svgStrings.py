@@ -1,4 +1,7 @@
+from pyclipper import PyclipperOffset
+
 def polygon(id,points,style):
+
     res = "<polygon id=\"" + str(id) + "\" " + "points=\""
     for point in points:
         res += str(point[0]) + ',' + str(point[1]) + ' '
