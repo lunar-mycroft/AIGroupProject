@@ -90,8 +90,8 @@ class MapNode:
 
     def numConnections(self,possibleNeighbors=None):
         if possibleNeighbors is not None:
-            for node in possibleNeighbors:
-                self.isAdjacent(node)
+            for node,otherNode in cartProd(possibleNeighbors,repeat=2):
+                node.isAdjacent(otherNode,tolerance=0.001)
 
         return len(self.neighbors)
 

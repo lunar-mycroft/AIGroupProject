@@ -3,6 +3,7 @@ from DrawPoints import DrawPoints
 from ColorMap import colorMap
 from time import time
 from itertools import product as cartProd
+from Order import Next
 
 def main():
     startTime=time()
@@ -15,14 +16,19 @@ def main():
     for node,otherNode in cartProd(nodes,repeat=2):
         node.isAdjacent(otherNode,tolerance=0.001)
     print("Finished checking in "+str(time()-startTime)+" seconds")
+    
+    path = list()
+    Next(nodes[0], path, 2, len(nodes)-1)
+    for step in path:
+    	print(step.id)
 
-    print("Attempting to solve")
-    startTime=time()
-    res=colorMap(nodes)
-    if res is None:
-        print("failed!")
-        exit()
-    print("Finished solving in"+str(time()-startTime)+" seconds")
+    # print("Attempting to solve")
+    # startTime=time()
+    # res=colorMap(nodes)
+    # if res is None:
+    #     print("failed!")
+    #     exit()
+    # print("Finished solving in"+str(time()-startTime)+" seconds")
 
 
     print("Drawing points")
