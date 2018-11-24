@@ -15,3 +15,18 @@ def colorMap(nodes):
                 return res
             node.color=None
     return None
+
+def colorNodes(nodes):
+    for node in nodes:
+        if node.color is not None:
+            break
+        #colors = sample(node.colors, k=len(node.colors))
+        node.updatePossibleColors()
+        colors = list(node.colors)
+        #print(colors)
+        if len(colors) is not 0:
+            node.setColor(colors[0])
+        else:
+            return False
+
+    return True

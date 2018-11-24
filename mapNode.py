@@ -82,9 +82,9 @@ class MapNode:
     def setColor(self,color):
         if not color in self.colors: #If we _can_ avoid calling updatePossibleColors, do so.
             return False
-        self.updatePossibleColors()
-        if not color in self.colors:
-            return False
+        # self.updatePossibleColors()
+        # if not color in self.colors:
+        #     return False
         self.color=color
         return True
 

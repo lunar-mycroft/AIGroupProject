@@ -1,4 +1,3 @@
-
 def Next(baseNode, path, backtrack, end):
 	maxConnections = -1
 	node = None
@@ -26,4 +25,4 @@ def Next(baseNode, path, backtrack, end):
 				else:
 					return path
 	
-	return path
+	return path 
