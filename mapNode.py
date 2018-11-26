@@ -64,8 +64,8 @@ class MapNode:
             return False
 
         for line in lines(self.poly):
-            normals=[perpLine(line,normLen,0),perpLine(line,-normLen,0),
-                     perpLine(line, normLen, 1), perpLine(line, -normLen, 1)]
+            normals=[perpLine(line,normLen,0.1),perpLine(line,-normLen,0.1),
+                     perpLine(line, normLen, 0.9), perpLine(line, -normLen, 0.9)]
             for norm,otherLine in cartProd(normals,lines(other.poly)):
                 if linesCross(norm,otherLine):
                     self.connectTo(other)
@@ -116,8 +116,19 @@ class MapNode:
         return self.boundingCircle()[0]
 
     def __str__(self): #This should return the SVG of the mape node, except not colored according to color.
-        res= svgPolygon(self.id,self.poly,"fill:#"+("aaaaaa" if self.color is None else self.color)+";stroke:#ffffff;stroke-width:1")+"\n"#+svgDot(self.boundingCircle()[0],"ff0000")+"\n"
+        res= svgPolygon(self.id,self.poly,"fill:#"+("aaaaaa" if self.color is None else self.color)+";stroke:#ffffff;stroke-width:1")+"\n"+svgDot(self.boundingCircle()[0],"ff0000")+"\n"
         return res
 
     def __gt__(self, other):
-        return self.id>other.id #Placeholder
+        if (self.color is None)!=(other.color is None):
+            return self.color is None
+        if (len(self.colors)==1)!=(len(other.colors)==1):
+            return len(self.colors)==1
+
+        if len(self.neighbors)!=len(other.neighbors):
+            return len(self.neighbors)>len(other.neighbors)
+
+        if len(self.colors)!=len(other.colors):
+            return len(self.colors)>len(other.colors)
+
+        return self.id>other.id

@@ -19,15 +19,13 @@ def main():
     print("Attempting to solve")
     startTime=time()
     res=colorMap(nodes)
-    if res is None:
+    if res[0] is None:
         print("failed!")
         exit()
     print("Finished solving in"+str(time()-startTime)+" seconds")
-
-
     print("Drawing points")
     startTime = time()
-    DrawPoints(nodes, "home.html")
+    DrawPoints(nodes, "home.html",True)
     print("Finished drawing in " + str(time() - startTime) + " seconds")
 
 main()
