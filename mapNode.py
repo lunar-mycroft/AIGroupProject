@@ -11,6 +11,7 @@ class MapNode:
         self.color=None
         self.poly=polygons
         self.colors=set(colors)
+        self.orgColors=self.colors
 
     def connectTo(self, other): #Forces a connection.  Don't use if you don't have to.
         if not isinstance(other, MapNode):
@@ -74,6 +75,7 @@ class MapNode:
         return False
 
     def updatePossibleColors(self):
+        self.colors=self.orgColors
         for neighbor in self.neighbors:
             if neighbor.color is not None:
                 if neighbor.color in self.colors:
