@@ -25,13 +25,13 @@ def main():
     # nodes = pickle.load(open("test.p", "rb"))
     
     path = list()
-    Next(nodes[0], path, 2, len(nodes)-1)
+    Next(nodes[0], path, 2, len(nodes))
 
-    for step in path:
-    	print(step.id, step.numConnections())
-    	# for neighbor in step.neighbors:
-    	# 	print(neighbor.id)
-    print("Path Length:",len(path))
+    # for step in path:
+    # 	print(step.id, step.numConnections())
+    # 	# for neighbor in step.neighbors:
+    # 	# 	print(neighbor.id)
+    # print("Path Length:",len(path))
 
     # print("Attempting to solve")
     # startTime=time()
