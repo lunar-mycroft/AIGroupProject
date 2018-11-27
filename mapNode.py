@@ -65,13 +65,10 @@ class MapNode:
             self.notNeighbors.add(other)
             return False
 
-        for i,point in enumerate(self.poly):
-            for j,point2 in enumerate(other.poly):
-                if point == point2:
-                    if i != len(self.poly)-1:
-                        if j != 0 and self.poly[i+1] == other.poly[j-1]:
-                            self.connectTo(other)
-                            return True
+        for (i,point),(j,point2) in cartProd(enumerate(self.poly),enumerate(other.poly)):
+            if point==point2 and i != len(self.poly)-1 and j != 0 and self.poly[i+1] == other.poly[j-1]:
+                self.connectTo(other)
+                return True
 
         self.notNeighbors.add(other)
         return False
