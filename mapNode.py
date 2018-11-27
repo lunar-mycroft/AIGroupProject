@@ -1,6 +1,7 @@
 from pointUtils import boundingCircle, pointDistance, normalizePoint, lines, perpLine,linesCross,angleBetween
 from svgStrings import dot as svgDot, polygon as svgPolygon
 from itertools import product as cartProd
+from copy import deepcopy
 
 class MapNode:
     def __init__(self,inName,inID,polygons,colors): #Constructor.
@@ -11,7 +12,6 @@ class MapNode:
         self.color=None
         self.poly=polygons
         self.colors=set(colors)
-        self.orgColors=self.colors
 
     def connectTo(self, other): #Forces a connection.  Don't use if you don't have to.
         if not isinstance(other, MapNode):
@@ -75,7 +75,7 @@ class MapNode:
         return False
 
     def updatePossibleColors(self):
-        self.colors=self.orgColors
+        self.colors=set(["ff0000","00ff00","0000ff","ff00ff"])
         for neighbor in self.neighbors:
             if neighbor.color is not None:
                 if neighbor.color in self.colors:

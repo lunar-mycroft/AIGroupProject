@@ -4,7 +4,7 @@ def Next(baseNode, path, backtrack, end):
 	for i, nextNode in enumerate(baseNode.neighbors): 
 		con = nextNode.numConnections()
 		if con > maxConnections:
-			if nextNode.numValues() > 0 and nextNode not in path: #and nextNode.color is None:
+			if nextNode.numValues() > 0 and nextNode not in path:
 				maxConnections = con
 				node = nextNode
 			
@@ -12,7 +12,7 @@ def Next(baseNode, path, backtrack, end):
 		path.append(node)
 		if len(node.neighbors) > 0:
 			Next(node, path, backtrack, end)
-	elif len(path) >= end: #or len(path) >= 87: #or backtrack >= len(path)-3 :
+	elif len(path) >= end:
 		return path
 	else:
 		for neighbor in path[len(path)-backtrack].neighbors:
