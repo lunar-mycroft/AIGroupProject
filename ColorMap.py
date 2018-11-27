@@ -38,9 +38,9 @@ def colorNode(nodes, place=0, tb=set(), count=1, reset=False):
     if place < 0:
         print("Failed. Index went negative")
         return False
-    # if count == 2800:
-    #     print("Exceeded limit")
-    #     return False
+    if count == 2850:
+        print("Exceeded limit")
+        return False
 
     node = nodes[place]
     node.updatePossibleColors()
