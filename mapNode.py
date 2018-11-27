@@ -62,15 +62,17 @@ class MapNode:
         normLen=circle[1]*tolerance
 
         if pointDistance(circle[0],otherCircle[0])>maxDistance:
+            self.notNeighbors.add(other)
             return False
 
-        for line in lines(self.poly):
-            normals=[perpLine(line,normLen,0),perpLine(line,-normLen,0),
-                     perpLine(line, normLen, 1), perpLine(line, -normLen, 1)]
-            for norm,otherLine in cartProd(normals,lines(other.poly)):
-                if linesCross(norm,otherLine):
-                    self.connectTo(other)
-                    return True
+        for i,point in enumerate(self.poly):
+            for j,point2 in enumerate(other.poly):
+                if point == point2:
+                    if i != len(self.poly)-1:
+                        if j != 0 and self.poly[i+1] == other.poly[j-1]:
+                            self.connectTo(other)
+                            return True
+
         self.notNeighbors.add(other)
         return False
 

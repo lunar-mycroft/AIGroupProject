@@ -26,7 +26,7 @@ def main():
 
     # print("Attempting to solve")
     # startTime=time()
-    # res=colorMap(path)
+    #res=colorMap(path)
     # if res is None:
     #     print("failed!")
     #     exit()
