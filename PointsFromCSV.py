@@ -14,8 +14,38 @@ def GetPointsFromCSV(CSVNAME):
     nodes = list() 
     id = 0
     for id,nodeCSV in enumerate(nodesCSV):
-        newGeometry = nodeCSV[1].replace("<Polygon><outerBoundaryIs><LinearRing><coordinates>",'')
-        newGeometry = newGeometry.replace("</coordinates></LinearRing></outerBoundaryIs></Polygon>",'')
+        #temp = nodeCSV[1].replace("<MultiGeometry>",'')
+        newGeometry = nodeCSV[1].replace("<MultiGeometry>",'')
+        if(newGeometry != nodeCSV[1]):
+            newGeometry = newGeometry.replace("<Polygon>",'')
+            newGeometry = newGeometry.replace("<outerBoundaryIs>",'')
+            newGeometry = newGeometry.replace("<LinearRing>",'')
+            newGeometry = newGeometry.replace("<coordinates>",'')
+            newGeometry = newGeometry.replace("</coordinates>",'')
+            newGeometry = newGeometry.replace("</LinearRing>",'')
+            newGeometry = newGeometry.replace("</outerBoundaryIs>",'')
+            newGeometry = newGeometry.replace("</Polygon>",' ')
+            newGeometry = newGeometry.replace("<innerBoundaryIs>",' ')
+            newGeometry = newGeometry.replace("</innerBoundaryIs>",'')
+            newGeometry = newGeometry.replace("</MultiGeometry>",'')
+            newGeometry = newGeometry.replace("\n",' ')
+            
+            newGeometry = newGeometry[:-1]
+
+        else:
+            newGeometry = newGeometry.replace("<Polygon>",'')
+            newGeometry = newGeometry.replace("<outerBoundaryIs>",'')
+            newGeometry = newGeometry.replace("<LinearRing>",'')
+            newGeometry = newGeometry.replace("<coordinates>",'')
+            newGeometry = newGeometry.replace("</coordinates>",'')
+            newGeometry = newGeometry.replace("</LinearRing>",'')
+            newGeometry = newGeometry.replace("</outerBoundaryIs>",'')
+            newGeometry = newGeometry.replace("</Polygon>",'')
+            newGeometry = newGeometry.replace("<innerBoundaryIs>",' ')
+            newGeometry = newGeometry.replace("</innerBoundaryIs>",'')
+            newGeometry = newGeometry.replace("\n",' ')
+            if newGeometry[len(newGeometry)-1] == ' ':
+                newGeometry = newGeometry[:-1]
         nodeCSV = (nodeCSV[0],newGeometry)
 
         xyList = nodeCSV[1].split(' ')
