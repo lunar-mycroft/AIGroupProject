@@ -5,6 +5,7 @@ from time import time
 from itertools import product as cartProd
 from Order import Next
 import pickle
+import sys
 
 def main():
     startTime=time()
@@ -12,20 +13,24 @@ def main():
     nodes = GetPointsFromCSV('OhioCounties.csv')
     print("Finished importing in "+str(time()-startTime)+" seconds")
 
-    # print("Checking Adjacency")
-    # startTime=time()
-    # for node,otherNode in cartProd(nodes,repeat=2):
-    #     node.isAdjacent(otherNode,tolerance=0.001)
-    # print("Finished checking in "+str(time()-startTime)+" seconds")
+    sys.setrecursionlimit(10000)
 
-    # pickle.dump(nodes, open("test.p", "wb"))
-    nodes = pickle.load(open("test.p", "rb"))
+    print("Checking Adjacency")
+    startTime=time()
+    for node,otherNode in cartProd(nodes,repeat=2):
+        node.isAdjacent(otherNode,tolerance=0.001)
+    print("Finished checking in "+str(time()-startTime)+" seconds")
+
+    pickle.dump(nodes, open("test.p", "wb"))
+    # nodes = pickle.load(open("test.p", "rb"))
     
     path = list()
     Next(nodes[0], path, 2, len(nodes)-1)
 
     for step in path:
-    	print(step.id)
+    	print(step.id, step.numConnections())
+    	# for neighbor in step.neighbors:
+    	# 	print(neighbor.id)
     print("Path Length:",len(path))
 
     # print("Attempting to solve")
