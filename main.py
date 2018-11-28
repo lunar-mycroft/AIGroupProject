@@ -25,7 +25,7 @@ def main():
     # nodes = pickle.load(open("test.p", "rb"))
     
     path = list()
-    Next(nodes[0], path, 2, len(nodes))
+    #Next(nodes[0], path, 2, len(nodes))
 
     # for step in path:
     # 	print(step.id, step.numConnections())
@@ -42,11 +42,11 @@ def main():
     # print("Finished solving in"+str(time()-startTime)+" seconds")
 
     # index = 0
-    res = colorNode(path)
+    #res = colorNode(path)
 
     print("Drawing points")
     startTime = time()
-    DrawPoints(nodes, "home.html")
+    DrawPoints(nodes, "home.html",True)
     print("Finished drawing in " + str(time() - startTime) + " seconds")
 
 main()

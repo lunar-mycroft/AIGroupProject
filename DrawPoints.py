@@ -14,9 +14,9 @@ def DrawPoints(counties, path,debugLines=False):
 
         if debugLines:
             for county in counties:
-                c1=county.center()
+                c1=county.center(True)
                 for neighbor in county.neighbors:
-                    c2=neighbor.center()
+                    c2=neighbor.center(True)
                     file.write(line((c1[0],c1[1],c2[0],c2[1]),"stroke:rgb(255,0,0);stroke-width:2"))
 
         file.write("</svg>")
