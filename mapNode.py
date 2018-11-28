@@ -4,8 +4,9 @@ from itertools import product as cartProd
 from copy import deepcopy
 
 class MapNode:
-    def __init__(self,inName,inID,polygons,colors): #Constructor.
+    def __init__(self,inName,inStateName,inID,polygons,colors): #Constructor.
         self.name = inName
+        self.stateName = inStateName
         self.id = inID
         self.neighbors=set({})
         self.notNeighbors=set({})
@@ -47,13 +48,15 @@ class MapNode:
         return True
 
     def isAdjacent(self,other,tolerance=0.01,supressDeepCheck=False):
-        if other is self or not isinstance(other,MapNode):
-            return False
         if other in self.neighbors:
             return True
-
         if other in self.notNeighbors or (self in other.notNeighbors) or supressDeepCheck:
             return False
+        if other is self or not isinstance(other,MapNode):
+            return False
+        
+
+        
 
         #circle=boundingCircle(self.poly)
         #otherCircle=boundingCircle(other.poly)

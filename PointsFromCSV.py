@@ -5,15 +5,20 @@ from mapNode import MapNode
 def GetPointsFromCSV(CSVNAME):
     
     #'GroupMapColoring/OhioCounties.csv'
-    nodesCSV = list()
+    nodesCSV = []
     with open(CSVNAME,'r') as csvfile:
         reader = csv.DictReader(csvfile)
+        
         for row in reader:
-            nodesCSV.append((row['County Name'],row["geometry"]))
+            try:
+                nodesCSV.append((row['County Name'],row["geometry"],row["State Abbr"]))
+            except:
+                nodesCSV.append((row['County Name'],row["geometry"],row["State Abbr."]))
+            
     
     nodes = list() 
     id = 0
-    for id,nodeCSV in enumerate(nodesCSV):
+    for nodeCSV in nodesCSV:
         #temp = nodeCSV[1].replace("<MultiGeometry>",'')
         temp = nodeCSV[1].replace("<MultiGeometry>",'')
 
@@ -37,15 +42,16 @@ def GetPointsFromCSV(CSVNAME):
         if newGeometry[len(newGeometry)-1] == ' ':
                 newGeometry = newGeometry[:-1]
         
-        nodeCSV = (nodeCSV[0],newGeometry)
+        nodeCSV = (nodeCSV[0],newGeometry,nodeCSV[2])
 
         xyList = nodeCSV[1].split(' ')
         xyTupleList = list()
         for coordinate in xyList:
             split = coordinate.split(',')
             xyTupleList.append((float(split[0]),-float(split[1])))
-        newCounty = MapNode(nodeCSV[0],id,xyTupleList,["ff0000","00ff00","0000ff","ff00ff"])#,"00ffff"])
+        newCounty = MapNode(nodeCSV[0],id,nodeCSV[2],xyTupleList,["ff0000","00ff00","0000ff","ff00ff"])#,"00ffff"])
         nodes.append(newCounty)
+        id = id + 1
 
         
     

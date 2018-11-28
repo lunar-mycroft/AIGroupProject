@@ -4,7 +4,7 @@ from svgStrings import line
 
 def DrawPoints(counties, path,debugLines=False):
     box = superBoundingBox(map(lambda c: boundingBox(c.poly), counties))
-    width, height = drawingSize(box,width=1000)
+    width, height = drawingSize(box,width=5000)
     normalize(counties,box,(width,height))
 
     with open(path,'w') as file:
