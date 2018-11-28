@@ -110,15 +110,17 @@ class MapNode:
     def normalizePoly(self,oldBox,newSize):
         self.poly=list(map(lambda p:normalizePoint(p,oldBox,newSize),self.poly))
 
-    def boundingCircle(self):
+    def boundingCircle(self,force=False):
         try:
+            if force:
+                self._boundingCircle_=boundingCircle(self.poly)
             return self._boundingCircle_
         except:
             self._boundingCircle_=boundingCircle(self.poly)
             return self._boundingCircle_
 
-    def center(self):
-        return self.boundingCircle()[0]
+    def center(self,force=False):
+        return self.boundingCircle(force)[0]
 
     def __str__(self): #This should return the SVG of the mape node, except not colored according to color.
         res= svgPolygon(self.id,self.poly,"fill:#"+("aaaaaa" if self.color is None else self.color)+";stroke:#ffffff;stroke-width:1")+"\n"#+svgDot(self.boundingCircle()[0],"ff0000")+"\n"
