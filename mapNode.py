@@ -55,11 +55,15 @@ class MapNode:
         if other in self.notNeighbors or (self in other.notNeighbors) or supressDeepCheck:
             return False
 
-        circle=boundingCircle(self.poly)
-        otherCircle=boundingCircle(other.poly)
-        maxDistance=(circle[1]+otherCircle[1])*(1+2*tolerance)
+        #circle=boundingCircle(self.poly)
+        #otherCircle=boundingCircle(other.poly)
+        #maxDistance=(circle[1]+otherCircle[1])*(1+2*tolerance)
 
-        normLen=circle[1]*tolerance
+        circle= self.boundingCircle()
+        otherCircle= other.boundingCircle()
+        maxDistance=(circle[1]+otherCircle[1])
+
+        #normLen=circle[1]*tolerance
 
         if pointDistance(circle[0],otherCircle[0])>maxDistance:
             self.notNeighbors.add(other)
