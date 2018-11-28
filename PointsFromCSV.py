@@ -15,37 +15,28 @@ def GetPointsFromCSV(CSVNAME):
     id = 0
     for id,nodeCSV in enumerate(nodesCSV):
         #temp = nodeCSV[1].replace("<MultiGeometry>",'')
-        newGeometry = nodeCSV[1].replace("<MultiGeometry>",'')
-        if(newGeometry != nodeCSV[1]):
-            newGeometry = newGeometry.replace("<Polygon>",'')
-            newGeometry = newGeometry.replace("<outerBoundaryIs>",'')
-            newGeometry = newGeometry.replace("<LinearRing>",'')
-            newGeometry = newGeometry.replace("<coordinates>",'')
-            newGeometry = newGeometry.replace("</coordinates>",'')
-            newGeometry = newGeometry.replace("</LinearRing>",'')
-            newGeometry = newGeometry.replace("</outerBoundaryIs>",'')
-            newGeometry = newGeometry.replace("</Polygon>",' ')
-            newGeometry = newGeometry.replace("<innerBoundaryIs>",' ')
-            newGeometry = newGeometry.replace("</innerBoundaryIs>",'')
-            newGeometry = newGeometry.replace("</MultiGeometry>",'')
-            newGeometry = newGeometry.replace("\n",' ')
-            
-            newGeometry = newGeometry[:-1]
+        temp = nodeCSV[1].replace("<MultiGeometry>",'')
 
+        newGeometry = temp.replace("<Polygon>",'')
+        newGeometry = newGeometry.replace("<outerBoundaryIs>",'')
+        newGeometry = newGeometry.replace("<LinearRing>",'')
+        newGeometry = newGeometry.replace("<coordinates>",'')
+        newGeometry = newGeometry.replace("</coordinates>",'')
+        newGeometry = newGeometry.replace("</LinearRing>",'')
+        newGeometry = newGeometry.replace("</outerBoundaryIs>",'')
+        newGeometry = newGeometry.replace("</innerBoundaryIs>",'')
+        newGeometry = newGeometry.replace("<innerBoundaryIs>",' ')
+        newGeometry = newGeometry.replace("\n",' ')
+        newGeometry = newGeometry.replace("</MultiGeometry>",'')            
+
+        if(temp != nodeCSV[1]):
+            newGeometry = newGeometry.replace("</Polygon>",' ')
         else:
-            newGeometry = newGeometry.replace("<Polygon>",'')
-            newGeometry = newGeometry.replace("<outerBoundaryIs>",'')
-            newGeometry = newGeometry.replace("<LinearRing>",'')
-            newGeometry = newGeometry.replace("<coordinates>",'')
-            newGeometry = newGeometry.replace("</coordinates>",'')
-            newGeometry = newGeometry.replace("</LinearRing>",'')
-            newGeometry = newGeometry.replace("</outerBoundaryIs>",'')
             newGeometry = newGeometry.replace("</Polygon>",'')
-            newGeometry = newGeometry.replace("<innerBoundaryIs>",' ')
-            newGeometry = newGeometry.replace("</innerBoundaryIs>",'')
-            newGeometry = newGeometry.replace("\n",' ')
-            if newGeometry[len(newGeometry)-1] == ' ':
+        
+        if newGeometry[len(newGeometry)-1] == ' ':
                 newGeometry = newGeometry[:-1]
+        
         nodeCSV = (nodeCSV[0],newGeometry)
 
         xyList = nodeCSV[1].split(' ')
