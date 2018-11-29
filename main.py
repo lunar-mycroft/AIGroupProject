@@ -13,7 +13,7 @@ def main():
     nodes = GetPointsFromCSV('OhioCounties.csv')
     print("Finished importing in "+str(time()-startTime)+" seconds")
 
-    sys.setrecursionlimit(10000)
+    sys.setrecursionlimit(2400)
 
     print("Checking Adjacency")
     startTime=time()
@@ -21,11 +21,11 @@ def main():
         node.isAdjacent(otherNode,tolerance=0.001)
     print("Finished checking in "+str(time()-startTime)+" seconds")
 
-    pickle.dump(nodes, open("test.p", "wb"))
+    #pickle.dump(nodes, open("test.p", "wb"))
     # nodes = pickle.load(open("test.p", "rb"))
     
     path = list()
-    #Next(nodes[0], path, 2, len(nodes))
+    Next(nodes[0], path, 2, len(nodes))
 
     # for step in path:
     # 	print(step.id, step.numConnections())
@@ -42,11 +42,11 @@ def main():
     # print("Finished solving in"+str(time()-startTime)+" seconds")
 
     # index = 0
-    #res = colorNode(path)
+    res = colorNode(path)
 
     print("Drawing points")
     startTime = time()
-    DrawPoints(nodes, "home.html",True)
+    DrawPoints(nodes, "home.html")
     print("Finished drawing in " + str(time() - startTime) + " seconds")
 
 main()

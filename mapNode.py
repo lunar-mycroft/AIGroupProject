@@ -12,7 +12,7 @@ class MapNode:
         self.notNeighbors=set({})
         self.color=None
         self.poly=polygons
-        self.colors=set(colors)
+        self.colors=list(colors)
 
     def connectTo(self, other): #Forces a connection.  Don't use if you don't have to.
         if not isinstance(other, MapNode):
@@ -81,7 +81,7 @@ class MapNode:
         return False
 
     def updatePossibleColors(self):
-        self.colors=set(["ff0000","00ff00","0000ff","ff00ff"])
+        self.colors=list(["ff0000","00ff00","0000ff","ff00ff"])
         for neighbor in self.neighbors:
             if neighbor.color is not None:
                 if neighbor.color in self.colors:
