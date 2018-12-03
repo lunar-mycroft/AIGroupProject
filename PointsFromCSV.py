@@ -49,7 +49,7 @@ def GetPointsFromCSV(CSVNAME):
         for coordinate in xyList:
             split = coordinate.split(',')
             xyTupleList.append((float(split[0]),-float(split[1])))
-        newCounty = MapNode(nodeCSV[0],id,nodeCSV[2],xyTupleList,["ff0000","00ff00","0000ff","ff00ff"])#,"00ffff"])
+        newCounty = MapNode(nodeCSV[0],nodeCSV[2],id,xyTupleList,["ff0000","00ff00","0000ff","ff00ff"])#,"00ffff"])
         nodes.append(newCounty)
         id = id + 1
 

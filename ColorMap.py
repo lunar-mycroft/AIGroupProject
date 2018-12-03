@@ -41,8 +41,7 @@ def colorIndex(color):
     return None
 
 
-def colorNode(nodes, place=0, tb=set(), count=1, reset=True):
-    print("Coloring nodes")
+def colorNode(nodes, place=0, tb=set(), count=0, reset=False):
     while True:
         if place == len(nodes):
             print("Done coloring nodes")
@@ -56,7 +55,11 @@ def colorNode(nodes, place=0, tb=set(), count=1, reset=True):
             print("Exceeded limit")
             print("count = ",count)
             return False
-        count = count + 1
+        # Presentation Use Only
+        if count > 15150:
+            print("break", count)
+            return False
+
         node = nodes[place]
         node.updatePossibleColors()
         colors = list(node.colors)
@@ -98,8 +101,8 @@ def colorNode(nodes, place=0, tb=set(), count=1, reset=True):
         for index, n in remove:
             tb.remove((index, n))
         count += 1
-        #print(count)#, place, colors)
-        #print(tb)
+        #print(count, place, colors, node.color)#, place, colors)
+        #print(count)
         if reset:
             if len(colors) == 1:
                 node.color = None
@@ -137,20 +140,15 @@ def colorNode(nodes, place=0, tb=set(), count=1, reset=True):
                 continue
                 #colorNode(nodes, place+1, tb, count, False)
 
-        # elif node.color is not None:
-        #     place = place + 1
-        #     reset = False
-        #     continue
-        #     #colorNode(nodes, place+1, tb, count)
-
-        # elif len(colors) != 0:
-        #     node.setColor(colors[0])
-        #     place = place + 1
-        #     reset = False
-        #     continue
-        #     #colorNode(nodes, place+1, tb, count)
-        # else:
-        #     place = place - 1
-        #     reset = True
-        #     continue
-        #     #colorNode(nodes, place-1, tb, count, True)
+        elif len(colors) != 0:
+            node.setColor(colors[0])
+            place = place + 1
+            reset = False
+            continue
+            #colorNode(nodes, place+1, tb, count)
+        else:
+            node.color = None
+            place = place - 1
+            reset = True
+            continue
+            #colorNode(nodes, place-1, tb, count, True)

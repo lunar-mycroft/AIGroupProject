@@ -24,13 +24,19 @@ def main():
     #pickle.dump(nodes, open("test.p", "wb"))
     # nodes = pickle.load(open("test.p", "rb"))
     
+    print("Ordering Nodes")
+    startTime = time()
+    check = list()
+    i = 0
     path = list()
-    Next(nodes[0], path, 2, len(nodes))
-
-    # for step in path:
-    # 	print(step.id, step.numConnections())
-    # 	# for neighbor in step.neighbors:
-    # 	# 	print(neighbor.id)
+    while len(check) != len(nodes):
+        path = list()
+        check = Next(nodes[i], path, 2, len(nodes), time())
+        i += 1
+    print("Finished ordering in "+str(time()-startTime)+" seconds")
+    
+    	# for neighbor in step.neighbors:
+    	# 	print(neighbor.id)
     # print("Path Length:",len(path))
 
     # print("Attempting to solve")
@@ -42,7 +48,16 @@ def main():
     # print("Finished solving in"+str(time()-startTime)+" seconds")
 
     # index = 0
-    res = colorNode(path)
+    # res = False
+    # while res is False:
+    print("Coloring Nodes")
+    startTime = time()
+    res = colorNode(check)
+    print("Finished coloring in "+str(time()-startTime)+" seconds")
+
+    print("Place\t|NodeID\t| Color")
+    for place, step in enumerate(path):
+        print(place+1, "\t|", step.id, "\t|", step.color)
 
     print("Drawing points")
     startTime = time()
